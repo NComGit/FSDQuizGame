@@ -106,18 +106,21 @@ function nextQuestion() {
 
     showQuestion();
 
-    // NEED TO ADD: update form optionList with new question / options
-    // NEED TO ADD: if final question then end game and show score
 }
 
 function selectQuestions() {
+    let arrayNum = [];
 
-    for (let i = 0; i < setNumOfQues; i++) {
-        arrayQues[i] = quizQuestions[Math.floor(Math.random() * (quizQuestions.length - 0 + 1)) + 0]
-
+    for (let i = 0; i < quizQuestions.length; i++) {
+        arrayNum[i] = i
     }
 
-    // NEED TO ADD: Will choose random questions from js_quizQuestions.js
+    shuffle(arrayNum);
+
+    for (let i = 0; i < setNumOfQues; i++) {
+        arrayQues[i] = quizQuestions[arrayNum[i]]
+    }
+
 }
 
 function showQuestion() {
@@ -134,3 +137,8 @@ function showQuestion() {
     document.getElementById("labelOption4").innerHTML = arrayQues[indexQues].options[3];
 }
 
+// Sourced from https://stackoverflow.com/questions/15585216/how-to-randomly-generate-numbers-without-repetition-in-javascript
+function shuffle(o) {
+    for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
