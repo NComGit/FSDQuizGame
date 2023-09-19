@@ -10,12 +10,39 @@
 <body>
     <container>
     <article>
-        <section>
-            <h3>Question: <div class="questionNumber"></div>/5</h3>
-            <button type="button">Begin!</button>
+        <section id="topArea">
+            <h3>Question: <div id="questionNumber"></div>/<div id="numOfQuestions"></div></h3>
+        </section>
+
+        <section id="welcomeSection">
+            <p>Welcome to the Quiz!</p>
+            <p>You will have 15 seconds to answer each question, the timer will begin as soon as you press begin.</p>
+            <p>Good Luck!</p>
+            <button type="button" id="btnBegin">Begin!</button>
+        </section>
+
+        <section id="gameArea">
+            <form>
+                <p id="question"></p>
+                <input type="radio" id="option1" name="optionList" value="1">
+                <label for="option1">1</label>
+                <input type="radio" id="option2" name="optionList" value="2">
+                <label for="option2">2</label>
+                <input type="radio" id="option3" name="optionList" value="3">
+                <label for="option3">3</label>
+                <input type="radio" id="option4" name="optionList" value="4">
+                <label for="option4">4</label>
+            </form>
+        </section>
+
+        <section id="bottomArea">
+            <button type="button" id="btnReset">Reset</button>
+            <button type="button" id="btnSubmit">Submit Answer</button>
+            <button type="button" id="btnNext">Next Question</button>
         </section>
     </article>
 </container>
+<script src="js/js_quizQuestions.js"></script>
 <script src="js/js_quizGame.js"></script>
 </body>
 </html>
