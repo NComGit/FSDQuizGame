@@ -23,6 +23,7 @@ function pageLoad() {
     gameArea.style.display = "none";
     bottomArea.style.display = "none";
     btnFinish.style.display = "none";
+    btnFinish.disabled = true;
 
     NumOfQues.innerText = setNumOfQues;
 
@@ -42,40 +43,15 @@ function gameStart() {
 
     selectQuestions();
 
-    btnReset.addEventListener("click", function () {
-        gameReset();
-    });
-
-    // Upon pressing submit, checkAnswer() is ran
-    btnSubmit.addEventListener("click", function () {
-        checkAnswer();
-    });
-
-    // Upon pressing submit, the next button is enabled
-    btnSubmit.addEventListener("click", function () {
-        btnNext.disabled = false;
-    });
-
-    btnNext.addEventListener("click", function () {
-        counterQues++;
-    });
-    btnNext.addEventListener("click", function () {
-        nextQuestion();
-    });
+    eventListenerStartUp();
 
     showQuestion();
 
 };
 
 function gameReset() {
-    //below code causes increment value to increase with every reset - unsure why
-    // welcomeSection.style.display = "";
-    // gameArea.style.display = "none";
-    // bottomArea.style.display = "none";
-    // document.getElementById("questionNumber").innerText = "";
-    // counterQues = 1;
     window.location.reload();
-}
+};
 
 // Verifies which radio button is checked, in the form
 function checkAnswer() {
@@ -87,8 +63,13 @@ function checkAnswer() {
             selectedAnswer = optionList[i].value;
         }
     }
-    // NEED TO ADD: compare selectedAnswer with answer from object
-}
+
+    // !! executable code to be changed !!
+    if (selectedAnswer == arrayQues[indexQues].answer) {
+        alert("correct")
+    } else alert("incorrect")
+    //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+};
 
 function nextQuestion() {
     btnSubmit.disabled = false;
@@ -106,7 +87,7 @@ function nextQuestion() {
 
     showQuestion();
 
-}
+};
 
 function selectQuestions() {
     let arrayNum = [];
@@ -121,7 +102,7 @@ function selectQuestions() {
         arrayQues[i] = quizQuestions[arrayNum[i]]
     }
 
-}
+};
 
 function showQuestion() {
     document.getElementById("question").innerHTML = arrayQues[indexQues].question;
@@ -135,6 +116,39 @@ function showQuestion() {
     document.getElementById("labelOption2").innerHTML = arrayQues[indexQues].options[1];
     document.getElementById("labelOption3").innerHTML = arrayQues[indexQues].options[2];
     document.getElementById("labelOption4").innerHTML = arrayQues[indexQues].options[3];
+};
+
+function eventListenerStartUp() {
+    btnReset.addEventListener("click", function () {
+        gameReset();
+    });
+
+    // Upon pressing submit, checkAnswer() is ran
+    btnSubmit.addEventListener("click", function () {
+        checkAnswer();
+    });
+
+    // Upon pressing submit, the next button is enabled
+    btnSubmit.addEventListener("click", function () {
+        btnNext.disabled = false;
+    });
+
+    btnSubmit.addEventListener("click", function () {
+        if (counterQues == setNumOfQues) {
+            btnFinish.disabled = false;
+        }
+    });
+
+    btnNext.addEventListener("click", function () {
+        counterQues++;
+    });
+    btnNext.addEventListener("click", function () {
+        nextQuestion();
+    });
+
+    btnFinish.addEventListener("click", function () {
+
+    });
 }
 
 // Sourced from https://stackoverflow.com/questions/15585216/how-to-randomly-generate-numbers-without-repetition-in-javascript

@@ -81,4 +81,54 @@ var quizQuestions = [
             "Henry VIII"
         ]
     },
+    {
+        question: "What is the name of the World's largest ocean?",
+        answer: "Pacific Ocean",
+        options: [
+            "Pacific Ocean",
+            "Atlantic Ocean",
+            "Indian Ocean",
+            "Arctic Ocean"
+        ]
+    },
+    {
+        question: "Demolition of the Berlin wall separating East and West Germany began in what year?",
+        answer: "1989",
+        options: [
+            "1973",
+            "1989",
+            "1984",
+            "1978"
+        ]
+    },
+    {
+        question: "Which country consumes the most chocolate per capita?",
+        answer: "Switzerland",
+        options: [
+            "England",
+            "United States of America",
+            "Switzerland",
+            "Netherlands"
+        ]
+    },
+    {
+        question: "Which country invented ice cream?",
+        answer: "China",
+        options: [
+            "England",
+            "France",
+            "United States of America",
+            "China"
+        ]
+    },
+    // {
+    //     question: "",
+    //     answer: "",
+    //     options: [
+    //         "",
+    //         "",
+    //         "",
+    //         ""
+    //     ]
+    // },
 ];
