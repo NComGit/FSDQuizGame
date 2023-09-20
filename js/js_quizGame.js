@@ -70,6 +70,8 @@ function startTimer() {
             clearInterval(timer);
             timerDisplay.innerText = "";
             timerSeconds = 15; // Reset the timer duration
+            timerRunning = false; // Reset the timerRunning flag
+            counterQues++; // Move to the next question
             nextQuestion();
         }
     }, 1000);
