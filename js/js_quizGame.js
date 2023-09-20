@@ -91,23 +91,58 @@ function checkAnswer() {
     let optionList = document.getElementsByName('optionList');
     btnSubmit.disabled = true;
 
+    // add by Xiaoli Feng
+    let selectedOption = null;
+
     for (i = 0; i < optionList.length; i++) {
         if (optionList[i].checked) {
             selectedAnswer = optionList[i].value;
+            selectedOption = optionList[i];
         }
     }
+/**
+ * replace below code by Xiaoli Feng.
+ */
 
+    const correctAnswer = arrayQues[indexQues].answer;
+
+    if (selectedAnswer == correctAnswer) {
+        alert("Correct");
+        highlightSelectedAnswer(selectedOption, 'green'); // Highlight user-selected option in green
+    } else {
+        alert("Incorrect");
+        highlightSelectedAnswer(selectedOption, 'red'); // Highlight user-selected option in red
+    }
+
+/**
+ * by Comeau, Nicholas.
+ */
     // !! executable code to be changed !!
-    if (selectedAnswer == arrayQues[indexQues].answer) {
-        alert("correct")
-    } else alert("incorrect")
+    // if (selectedAnswer == arrayQues[indexQues].answer) {
+    //     alert("correct")
+    // } else alert("incorrect")
     //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 };
+
+/**
+ * 
+ * @param {*} selectedOption 
+ * @param {*} color 
+ */
+function highlightSelectedAnswer(selectedOption, color) {
+    if (selectedOption) {
+        // selectedOption.parentNode.style.color = color; // Highlight user-selected answer in the specified color (green or red)
+        selectedOption.nextElementSibling.style.color = color; // Highlight user-selected option in red
+
+    }
+}
+
 
 function nextQuestion() {
     clearInterval(timer); // Stop the timer
     btnSubmit.disabled = false;
     timerSeconds = 15; // Reset the timer duration
+
     if (counterQues == setNumOfQues) {
         btnNext.style.display = "none";
         btnFinish.style.display = ""
@@ -118,11 +153,33 @@ function nextQuestion() {
     btnNext.disabled = true;
 
     document.getElementById("questionNumber").innerText = counterQues;
-
+    clearOptionSelection(); // Clear the selected option
+    clearOptionColors(); // Clear option colors for the next question
     showQuestion();
     startTimer(); // Start the timer for the next question
 
 };
+
+/**
+ * 
+ */
+function clearOptionSelection() {
+    let optionList = document.getElementsByName('optionList');
+    
+    for (let i = 0; i < optionList.length; i++) {
+        optionList[i].checked = false; // Uncheck all radio buttons
+    }
+}
+/**
+ * 
+ */
+function clearOptionColors() {
+    let optionList = document.getElementsByName('optionList');
+    
+    for (let i = 0; i < optionList.length; i++) {
+        optionList[i].nextElementSibling.style.color = ''; // Clear the text color for all options
+    }
+}
 
 function selectQuestions() {
     let arrayNum = [];
