@@ -1,7 +1,8 @@
-/* Temporary */
 body{
+  margin-top: 10%;
     text-align: center;
-    background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+    /* background-image: linear-gradient(to right, #2c3e50, #4ca1af); */
+    background-color: beige;
     color:white
 }
 button {
@@ -59,7 +60,6 @@ button:active {
   p {
     font-size: 20px;
     text-transform: lowercase;
-    font-family: 'Gill Sans';
     letter-spacing: 3px;
     transition: 700ms ease;
     font-variation-settings: "wght" 311;
@@ -70,15 +70,36 @@ button:active {
     font-weight: bold;
   }
   
-  p:hover {
-    font-variation-settings: "wght" 582; 
-    letter-spacing: 1px;
-  }
-
   h3{
 color: black;
 font-weight: bold;
 
 
   }  
-  
+  /* Add CSS styles for the timer */
+  #timerDisplay {
+    color: red;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px; /* Adjust the font size as needed */
+  }
+
+  label{
+    color: black;
+    font-size: large;
+  }
+
+  #topArea{
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+
+#questionNumber {
+  display: inline-block;
+  margin-left: 0.5%;
+}
+
+#numOfQuestions{
+  display: inline-block;
+}
