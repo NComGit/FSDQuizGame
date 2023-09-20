@@ -13,6 +13,10 @@ var counterQues = 1;
 var arrayQues = [];
 var indexQues = counterQues - 1
 
+var timer;
+var timerSeconds = 15; // Set the timer duration in seconds
+var timerRunning = false; // Flag to track if the timer is running
+
 const setNumOfQues = 5;
 
 window.addEventListener("load", pageLoad);
@@ -23,6 +27,7 @@ function pageLoad() {
     gameArea.style.display = "none";
     bottomArea.style.display = "none";
     btnFinish.style.display = "none";
+    btnFinish.disabled = true;
 
     NumOfQues.innerText = setNumOfQues;
 
@@ -42,40 +47,42 @@ function gameStart() {
 
     selectQuestions();
 
-    btnReset.addEventListener("click", function () {
-        gameReset();
-    });
-
-    // Upon pressing submit, checkAnswer() is ran
-    btnSubmit.addEventListener("click", function () {
-        checkAnswer();
-    });
-
-    // Upon pressing submit, the next button is enabled
-    btnSubmit.addEventListener("click", function () {
-        btnNext.disabled = false;
-    });
-
-    btnNext.addEventListener("click", function () {
-        counterQues++;
-    });
-    btnNext.addEventListener("click", function () {
-        nextQuestion();
-    });
+    eventListenerStartUp();
 
     showQuestion();
 
+    startTimer();
+
 };
 
-function gameReset() {
-    //below code causes increment value to increase with every reset - unsure why
-    // welcomeSection.style.display = "";
-    // gameArea.style.display = "none";
-    // bottomArea.style.display = "none";
-    // document.getElementById("questionNumber").innerText = "";
-    // counterQues = 1;
-    window.location.reload();
+function startTimer() {
+    // playTimerSound(); // Play the timer sound
+    clearInterval(timer); // Clear any previous timers
+    var timerDisplay = document.getElementById("timerDisplay");
+    timerRunning = true;
+
+    timer = setInterval(function () {
+        timerDisplay.innerText = timerSeconds + "s";
+        timerSeconds--;
+
+        if (timerSeconds < 0 && timerRunning) {
+            // Time's up, automatically move to the next question
+            clearInterval(timer);
+            timerDisplay.innerText = "";
+            timerSeconds = 15; // Reset the timer duration
+            nextQuestion();
+        }
+    }, 1000);
 }
+
+function playTimerSound() {
+    var timerSound = document.getElementById("timerSound");
+    timerSound.play();
+}
+
+function gameReset() {
+    window.location.reload();
+};
 
 // Verifies which radio button is checked, in the form
 function checkAnswer() {
@@ -87,12 +94,18 @@ function checkAnswer() {
             selectedAnswer = optionList[i].value;
         }
     }
-    // NEED TO ADD: compare selectedAnswer with answer from object
-}
+
+    // !! executable code to be changed !!
+    if (selectedAnswer == arrayQues[indexQues].answer) {
+        alert("correct")
+    } else alert("incorrect")
+    //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+};
 
 function nextQuestion() {
+    clearInterval(timer); // Stop the timer
     btnSubmit.disabled = false;
-
+    timerSeconds = 15; // Reset the timer duration
     if (counterQues == setNumOfQues) {
         btnNext.style.display = "none";
         btnFinish.style.display = ""
@@ -105,8 +118,9 @@ function nextQuestion() {
     document.getElementById("questionNumber").innerText = counterQues;
 
     showQuestion();
+    startTimer(); // Start the timer for the next question
 
-}
+};
 
 function selectQuestions() {
     let arrayNum = [];
@@ -121,9 +135,10 @@ function selectQuestions() {
         arrayQues[i] = quizQuestions[arrayNum[i]]
     }
 
-}
+};
 
 function showQuestion() {
+
     document.getElementById("question").innerHTML = arrayQues[indexQues].question;
 
     document.getElementById("option1").value = arrayQues[indexQues].options[0];
@@ -135,6 +150,41 @@ function showQuestion() {
     document.getElementById("labelOption2").innerHTML = arrayQues[indexQues].options[1];
     document.getElementById("labelOption3").innerHTML = arrayQues[indexQues].options[2];
     document.getElementById("labelOption4").innerHTML = arrayQues[indexQues].options[3];
+};
+
+function eventListenerStartUp() {
+    btnReset.addEventListener("click", function () {
+        gameReset();
+    });
+
+    // Upon pressing submit, checkAnswer() is ran
+    btnSubmit.addEventListener("click", function () {
+        checkAnswer();
+        clearInterval(timer); // Stop the timer
+    });
+
+    // Upon pressing submit, the next button is enabled
+    btnSubmit.addEventListener("click", function () {
+        btnNext.disabled = false;
+    });
+
+    btnSubmit.addEventListener("click", function () {
+        if (counterQues == setNumOfQues) {
+            btnFinish.disabled = false;
+        }
+    });
+
+    btnNext.addEventListener("click", function () {
+        counterQues++;
+    });
+    btnNext.addEventListener("click", function () {
+        nextQuestion();
+        startTimer(); // Start the timer for the next question
+    });
+
+    btnFinish.addEventListener("click", function () {
+        // add final screen showing final results
+    });
 }
 
 // Sourced from https://stackoverflow.com/questions/15585216/how-to-randomly-generate-numbers-without-repetition-in-javascript
