@@ -4,20 +4,23 @@ var btnSubmit = document.getElementById("btnSubmit");
 var btnNext = document.getElementById("btnNext");
 var btnFinish = document.getElementById("btnFinish");
 var welcomeSection = document.getElementById("welcomeSection");
-var topArea = document.getElementById("topArea");
 var gameArea = document.getElementById("gameArea");
 var bottomArea = document.getElementById("bottomArea");
-var NumOfQues = document.getElementById("numOfQuestions");
-var selectedAnswer;
 var counterQues = 1;
 var arrayQues = [];
 var indexQues = counterQues - 1
+
+var timer;
+var timerSeconds = 15; // Set the timer duration in seconds
+var timerRunning = false; // Flag to track if the timer is running
 
 const setNumOfQues = 5;
 
 window.addEventListener("load", pageLoad);
 
 function pageLoad() {
+    let NumOfQues = document.getElementById("numOfQuestions");
+
     // Show only welcome page with game instructions and begin button
     welcomeSection.style.display = "";
     gameArea.style.display = "none";
@@ -47,7 +50,37 @@ function gameStart() {
 
     showQuestion();
 
+    startTimer();
+
 };
+
+function startTimer() {
+    // playTimerSound(); // Play the timer sound
+    clearInterval(timer); // Clear any previous timers
+    var timerDisplay = document.getElementById("timerDisplay");
+    timerRunning = true;
+
+    timer = setInterval(function () {
+        timerDisplay.innerText = timerSeconds + "s";
+        timerSeconds--;
+
+        if (timerSeconds < 0 && timerRunning) {
+            // Time's up, automatically move to the next question
+            clearInterval(timer);
+            timerDisplay.innerText = "";
+            timerSeconds = 15; // Reset the timer duration
+            timerRunning = false; // Reset the timerRunning flag
+            counterQues++; // Move to the next question
+            checkAnswer();
+            btnNext.disabled = false;
+        }
+    }, 1000);
+}
+
+function playTimerSound() {
+    var timerSound = document.getElementById("timerSound");
+    timerSound.play();
+}
 
 function gameReset() {
     window.location.reload();
@@ -56,23 +89,53 @@ function gameReset() {
 // Verifies which radio button is checked, in the form
 function checkAnswer() {
     let optionList = document.getElementsByName('optionList');
+    let selectedAnswer;
+    let correctAnswerPos;
+    let selectedOption = null; // add by Xiaoli Feng
+
+    const correctAnswer = arrayQues[indexQues].answer;
+
     btnSubmit.disabled = true;
 
+
+
+    // Assign user selected option to selectedAnswer
     for (i = 0; i < optionList.length; i++) {
         if (optionList[i].checked) {
             selectedAnswer = optionList[i].value;
+            selectedOption = optionList[i];
+        }
+
+        if (optionList[i].value == correctAnswer) {
+            correctAnswerPos = i
         }
     }
 
-    // !! executable code to be changed !!
-    if (selectedAnswer == arrayQues[indexQues].answer) {
-        alert("correct")
-    } else alert("incorrect")
-    //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (selectedAnswer == correctAnswer) {
+        highlightSelectedAnswer(selectedOption, 'green'); // Highlight user-selected option in green
+    } else {
+        highlightSelectedAnswer(selectedOption, 'red'); // Highlight user-selected option in red
+        optionList[correctAnswerPos].nextElementSibling.style.color = "green" //Highlights correct answer -NC
+    }
 };
 
+/**
+ * 
+ * @param {*} selectedOption 
+ * @param {*} color 
+ */
+function highlightSelectedAnswer(selectedOption, color) {
+    if (selectedOption) {
+        // selectedOption.parentNode.style.color = color; // Highlight user-selected answer in the specified color (green or red)
+        selectedOption.nextElementSibling.style.color = color; // Highlight user-selected option in red
+
+    }
+}
+
 function nextQuestion() {
+    clearInterval(timer); // Stop the timer
     btnSubmit.disabled = false;
+    timerSeconds = 15; // Reset the timer duration
 
     if (counterQues == setNumOfQues) {
         btnNext.style.display = "none";
@@ -84,10 +147,33 @@ function nextQuestion() {
     btnNext.disabled = true;
 
     document.getElementById("questionNumber").innerText = counterQues;
-
+    clearOptionSelection(); // Clear the selected option
+    clearOptionColors(); // Clear option colors for the next question
     showQuestion();
-
+    startTimer(); // Start the timer for the next question
 };
+
+/**
+ * 
+ */
+function clearOptionSelection() {
+    let optionList = document.getElementsByName('optionList');
+
+    for (let i = 0; i < optionList.length; i++) {
+        optionList[i].checked = false; // Uncheck all radio buttons
+    }
+}
+/**
+ * 
+ */
+function clearOptionColors() {
+    let optionList = document.getElementsByName('optionList');
+
+    for (let i = 0; i < optionList.length; i++) {
+        optionList[i].nextElementSibling.style.color = ''; // Clear the text color for all options
+    }
+}
+
 
 function selectQuestions() {
     let arrayNum = [];
@@ -123,17 +209,10 @@ function eventListenerStartUp() {
         gameReset();
     });
 
-    // Upon pressing submit, checkAnswer() is ran
     btnSubmit.addEventListener("click", function () {
         checkAnswer();
-    });
-
-    // Upon pressing submit, the next button is enabled
-    btnSubmit.addEventListener("click", function () {
+        clearInterval(timer); // Stop the timer
         btnNext.disabled = false;
-    });
-
-    btnSubmit.addEventListener("click", function () {
         if (counterQues == setNumOfQues) {
             btnFinish.disabled = false;
         }
@@ -141,8 +220,6 @@ function eventListenerStartUp() {
 
     btnNext.addEventListener("click", function () {
         counterQues++;
-    });
-    btnNext.addEventListener("click", function () {
         nextQuestion();
     });
 
