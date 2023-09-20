@@ -100,7 +100,6 @@ function checkAnswer() {
             selectedOption = optionList[i];
         }
     }
-
 /**
  * replace below code by Xiaoli Feng.
  */
@@ -137,8 +136,6 @@ function highlightSelectedAnswer(selectedOption, color) {
 
     }
 }
-};
-
 
 
 function nextQuestion() {
@@ -163,7 +160,6 @@ function nextQuestion() {
 
 };
 
-
 /**
  * 
  */
@@ -184,8 +180,6 @@ function clearOptionColors() {
         optionList[i].nextElementSibling.style.color = ''; // Clear the text color for all options
     }
 }
-};
-
 
 function selectQuestions() {
     let arrayNum = [];
@@ -225,7 +219,6 @@ function eventListenerStartUp() {
     // Upon pressing submit, checkAnswer() is ran
     btnSubmit.addEventListener("click", function () {
         checkAnswer();
-
         clearInterval(timer); // Stop the timer
     });
 
@@ -245,16 +238,11 @@ function eventListenerStartUp() {
     });
     btnNext.addEventListener("click", function () {
         nextQuestion();
-
         startTimer(); // Start the timer for the next question
     });
 
     btnFinish.addEventListener("click", function () {
-
-    });
-
-    btnFinish.addEventListener("click", function () {
-
+        // add final screen showing final results
     });
 }
 
