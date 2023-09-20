@@ -147,7 +147,7 @@ function eventListenerStartUp() {
     });
 
     btnFinish.addEventListener("click", function () {
-
+        // add final screen showing final results
     });
 }
 
