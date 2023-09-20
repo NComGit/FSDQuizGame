@@ -1,49 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style_quizGame.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/style_quizGame.css" />
     <title>Quiz Game!</title>
-</head>
-<body>
+  </head>
+  <body>
     <container>
-    <article>
+      <article>
         <section id="topArea">
-            <h3>Question: <div id="questionNumber"></div>/<div id="numOfQuestions"></div></h3>
+          <h3>
+            Question:
+            <div id="questionNumber"></div>
+            /
+            <div id="numOfQuestions"></div>
+          </h3>
         </section>
-
         <section id="welcomeSection">
-            <p>Welcome to the Quiz!</p>
-            <p>You will have 15 seconds to answer each randomly selected question, the timer will begin as soon as you press begin.</p>
-            <p>Good Luck!</p>
-            <button type="button" id="btnBegin">Begin!</button>
+          <p>Welcome to the Quiz!</p>
+          <p>
+            You will have 15 seconds to answer each randomly selected question,
+            the timer will begin as soon as you press begin.
+          </p>
+          <p>Good Luck!</p>
+
+          <button type="button" id="btnBegin">Begin!</button>
         </section>
 
         <section id="gameArea">
-            <form>
-                <p id="question"></p>
-                <input type="radio" id="option1" name="optionList" value="">
-                <label for="option1" id="labelOption1"></label>
-                <input type="radio" id="option2" name="optionList" value="">
-                <label for="option2" id="labelOption2"></label>
-                <input type="radio" id="option3" name="optionList" value="">
-                <label for="option3" id="labelOption3"></label>
-                <input type="radio" id="option4" name="optionList" value="">
-                <label for="option4" id="labelOption4"></label>
-            </form>
+          <form>
+            <p id="question"></p>
+            <!-- Add timer display element below -->
+            <p id="timerDisplay"></p>
+            <!-- Rest of your form elements... -->
+            <input type="radio" id="option1" name="optionList" value="" />
+            <label for="option1" id="labelOption1"></label>
+            <input type="radio" id="option2" name="optionList" value="" />
+            <label for="option2" id="labelOption2"></label>
+            <input type="radio" id="option3" name="optionList" value="" />
+            <label for="option3" id="labelOption3"></label>
+            <input type="radio" id="option4" name="optionList" value="" />
+            <label for="option4" id="labelOption4"></label>
+          </form>
         </section>
 
         <section id="bottomArea">
-            <button type="button" id="btnReset">Reset</button>
-            <button type="button" id="btnSubmit">Submit Answer</button>
-            <button type="button" id="btnNext">Next Question</button>
-            <button type="button" id="btnFinish">Finish</button>
+          <button type="button" id="btnReset">Reset</button>
+          <button type="button" id="btnSubmit">Submit Answer</button>
+          <button type="button" id="btnNext">Next Question</button>
+          <button type="button" id="btnFinish">Finish</button>
         </section>
-    </article>
-</container>
-<script src="js/js_quizQuestions.js"></script>
-<script src="js/js_quizGame.js"></script>
-</body>
+      </article>
+      <div id="timerDisplay"></div>
+    </container>
+    <script src="js/js_quizQuestions.js"></script>
+    <script src="js/js_quizGame.js"></script>
+  </body>
 </html>

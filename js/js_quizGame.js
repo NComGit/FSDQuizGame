@@ -13,6 +13,10 @@ var counterQues = 1;
 var arrayQues = [];
 var indexQues = counterQues - 1
 
+var timer;
+var timerSeconds = 15; // Set the timer duration in seconds
+var timerRunning = false; // Flag to track if the timer is running
+
 const setNumOfQues = 5;
 
 window.addEventListener("load", pageLoad);
@@ -47,7 +51,36 @@ function gameStart() {
 
     showQuestion();
 
+    startTimer();
+
 };
+
+function startTimer() {
+    // playTimerSound(); // Play the timer sound
+    clearInterval(timer); // Clear any previous timers
+    var timerDisplay = document.getElementById("timerDisplay");
+    timerRunning = true;
+
+    timer = setInterval(function () {
+        timerDisplay.innerText = timerSeconds + "s";
+        timerSeconds--;
+
+        if (timerSeconds < 0 && timerRunning) {
+            // Time's up, automatically move to the next question
+            clearInterval(timer);
+            timerDisplay.innerText = "";
+            timerSeconds = 15; // Reset the timer duration
+            timerRunning = false; // Reset the timerRunning flag
+            counterQues++; // Move to the next question
+            nextQuestion();
+        }
+    }, 1000);
+}
+
+function playTimerSound() {
+    var timerSound = document.getElementById("timerSound");
+    timerSound.play();
+}
 
 function gameReset() {
     window.location.reload();
@@ -58,21 +91,60 @@ function checkAnswer() {
     let optionList = document.getElementsByName('optionList');
     btnSubmit.disabled = true;
 
+    // add by Xiaoli Feng
+    let selectedOption = null;
+
     for (i = 0; i < optionList.length; i++) {
         if (optionList[i].checked) {
             selectedAnswer = optionList[i].value;
+            selectedOption = optionList[i];
         }
     }
 
+/**
+ * replace below code by Xiaoli Feng.
+ */
+
+    const correctAnswer = arrayQues[indexQues].answer;
+
+    if (selectedAnswer == correctAnswer) {
+        alert("Correct");
+        highlightSelectedAnswer(selectedOption, 'green'); // Highlight user-selected option in green
+    } else {
+        alert("Incorrect");
+        highlightSelectedAnswer(selectedOption, 'red'); // Highlight user-selected option in red
+    }
+
+/**
+ * by Comeau, Nicholas.
+ */
     // !! executable code to be changed !!
-    if (selectedAnswer == arrayQues[indexQues].answer) {
-        alert("correct")
-    } else alert("incorrect")
+    // if (selectedAnswer == arrayQues[indexQues].answer) {
+    //     alert("correct")
+    // } else alert("incorrect")
     //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 };
 
+/**
+ * 
+ * @param {*} selectedOption 
+ * @param {*} color 
+ */
+function highlightSelectedAnswer(selectedOption, color) {
+    if (selectedOption) {
+        // selectedOption.parentNode.style.color = color; // Highlight user-selected answer in the specified color (green or red)
+        selectedOption.nextElementSibling.style.color = color; // Highlight user-selected option in red
+
+    }
+}
+};
+
+
+
 function nextQuestion() {
+    clearInterval(timer); // Stop the timer
     btnSubmit.disabled = false;
+    timerSeconds = 15; // Reset the timer duration
 
     if (counterQues == setNumOfQues) {
         btnNext.style.display = "none";
@@ -84,10 +156,36 @@ function nextQuestion() {
     btnNext.disabled = true;
 
     document.getElementById("questionNumber").innerText = counterQues;
-
+    clearOptionSelection(); // Clear the selected option
+    clearOptionColors(); // Clear option colors for the next question
     showQuestion();
+    startTimer(); // Start the timer for the next question
 
 };
+
+
+/**
+ * 
+ */
+function clearOptionSelection() {
+    let optionList = document.getElementsByName('optionList');
+    
+    for (let i = 0; i < optionList.length; i++) {
+        optionList[i].checked = false; // Uncheck all radio buttons
+    }
+}
+/**
+ * 
+ */
+function clearOptionColors() {
+    let optionList = document.getElementsByName('optionList');
+    
+    for (let i = 0; i < optionList.length; i++) {
+        optionList[i].nextElementSibling.style.color = ''; // Clear the text color for all options
+    }
+}
+};
+
 
 function selectQuestions() {
     let arrayNum = [];
@@ -105,6 +203,7 @@ function selectQuestions() {
 };
 
 function showQuestion() {
+
     document.getElementById("question").innerHTML = arrayQues[indexQues].question;
 
     document.getElementById("option1").value = arrayQues[indexQues].options[0];
@@ -126,6 +225,8 @@ function eventListenerStartUp() {
     // Upon pressing submit, checkAnswer() is ran
     btnSubmit.addEventListener("click", function () {
         checkAnswer();
+
+        clearInterval(timer); // Stop the timer
     });
 
     // Upon pressing submit, the next button is enabled
@@ -144,6 +245,12 @@ function eventListenerStartUp() {
     });
     btnNext.addEventListener("click", function () {
         nextQuestion();
+
+        startTimer(); // Start the timer for the next question
+    });
+
+    btnFinish.addEventListener("click", function () {
+
     });
 
     btnFinish.addEventListener("click", function () {
