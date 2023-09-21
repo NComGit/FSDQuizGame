@@ -71,7 +71,7 @@ function startTimer() {
             timerDisplay.innerText = "";
             timerSeconds = 15; // Reset the timer duration
             timerRunning = false; // Reset the timerRunning flag
-            counterQues++; // Move to the next question
+            // counterQues++; // Move to the next question
             checkAnswer();
             btnNext.disabled = false;
         }
