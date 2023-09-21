@@ -9,6 +9,7 @@ var bottomArea = document.getElementById("bottomArea");
 var counterQues = 1;
 var arrayQues = [];
 var indexQues = counterQues - 1
+var scoreCounter = 0;
 
 var timer;
 var timerSeconds = 15; // Set the timer duration in seconds
@@ -112,6 +113,7 @@ function checkAnswer() {
     }
 
     if (selectedAnswer == correctAnswer) {
+        scoreCounter++
         highlightSelectedAnswer(selectedOption, 'green'); // Highlight user-selected option in green
     } else {
         highlightSelectedAnswer(selectedOption, 'red'); // Highlight user-selected option in red
@@ -233,3 +235,25 @@ function shuffle(o) {
     for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 };
+
+function showFinalScorePage() {     //hides previous elements and displays message with final score
+    welcomeSection.style.display = "none";
+    gameArea.style.display = "none";
+    bottomArea.style.display = "none";
+    btnFinish.style.display = "none";
+    topArea.style.display = "none";
+    timerDisplay.style.display = "none";
+    document.getElementById("finalScorePage").style.display = "";
+    document.getElementById("finalScore").textContent = "You obtained a score of " + scoreCounter + "/5!";
+}
+
+btnFinish.addEventListener("click", function () {   
+    showFinalScorePage();
+});
+
+function startNewGame() {   //same functionality as reset button
+    window.location.reload();
+}
+document.getElementById("btnNewGame").addEventListener("click", function () {
+    startNewGame();
+});
